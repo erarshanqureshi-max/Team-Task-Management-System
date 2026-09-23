@@ -1,0 +1,39 @@
+# Build and compilation outputs
+bin/
+obj/
+dist/
+build/
+out/
+
+# Dependencies
+node_modules/
+packages/
+
+# IDE and Editor files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs and databases
+*.log
+*.mdf
+*.ldf
+*.sqlite
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Scratch/temp directories
+scratch/

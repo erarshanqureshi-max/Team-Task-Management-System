@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>TaskFlow - Full-Stack .NET 8 & React Interview Preparation Guide (Hinglish)</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 15mm 18mm 15mm;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #212529;
+      line-height: 1.5;
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, h4 {
+      color: #0b409c;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-size: 22px;
+      border-bottom: 2px solid #0b409c;
+      padding-bottom: 6px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #6c757d;
+      font-size: 13px;
+      margin-top: -4px;
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-size: 16px;
+      border-left: 4px solid #0b409c;
+      padding-left: 8px;
+      margin-top: 16px;
+      background: #f1f5f9;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    h3 {
+      font-size: 14px;
+      color: #1e293b;
+      margin-top: 10px;
+    }
+    p, ul, ol {
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    ul, ol {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    .badge-primary { background: #dbeafe; color: #1e40af; }
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .box {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .box-pitch {
+      background-color: #eff6ff;
+      border-left: 4px solid #2563eb;
+    }
+    .box-warning {
+      background-color: #fffbeb;
+      border-left: 4px solid #d97706;
+    }
+    .box-code {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: Consolas, monospace;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin: 6px 0;
+    }
+    .qa-card {
+      margin-bottom: 12px;
+      border-left: 3px solid #0b409c;
+      padding-left: 10px;
+      background: #fafafa;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    .qa-q {
+      font-weight: bold;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+    .qa-a {
+      color: #334155;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 12px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TaskFlow — Technical Interview Cheat Sheet (Hinglish)</h1>
+  <div class="subtitle">Complete Preparation Guide: Architecture, Security, Database, Code Quality & Tricky Questions</div>
+
+  <!-- SECTION 1 -->
+  <h2>1. Project Elevator Pitch (30–60 Seconds me kaise explain karein)</h2>
+  <div class="box box-pitch">
+    <strong>Interview me yeh bolna hai:</strong><br>
+    <em>"TaskFlow ek role-based Team Task Management System hai jo enterprise organizations ko teams structure karne, tasks delegate karne, workflow monitor karne aur in-app collaboration provide karne ke liye design kiya gaya hai.
+    <br><br>
+    Maine backend <strong>ASP.NET Core Web API (.NET 8)</strong> aur <strong>Entity Framework Core</strong> with <strong>SQL Server</strong> me banaya hai, jisme <strong>JWT Bearer Authentication</strong> aur <strong>BCrypt password hashing</strong> use ki hai. Frontend <strong>React 18 with Vite</strong> aur <strong>Bootstrap 5</strong> me centralized <strong>Axios</strong> client ke sath banaya hai.
+    <br><br>
+    Is project ka core highlight hai iska <strong>strict role authorization layer</strong>: Admin ke paas full organization access hai; Manager sirf apni team ke tasks create aur assign kar sakta hai (outsider assignment strictly blocked hai); aur standard User sirf apne assigned tasks dekh aur update kar sakta hai (tampering via task ID 403 Forbidden return karti hai). Saath hi 17 automated xUnit tests, Docker containerization aur GitHub Actions CI/CD pipeline bhi configured hai."</em>
+  </div>
+
+  <!-- SECTION 2 -->
+  <h2>2. Architecture & Design Principles</h2>
+  <p>Humne <strong>Clean 3-Tier Layered Architecture</strong> follow kiya hai:</p>
+  <ul>
+    <li><strong>Controllers</strong>: HTTP requests handle karte hain, routing, model validation aur DTO serialization karte hain.</li>
+    <li><strong>Services & Interfaces</strong>: Saari business rules, role scoping aur notification dispatching yahan hoti hai.</li>
+    <li><strong>Data Layer (ApplicationDbContext)</strong>: EF Core 8 models, database constraints, relationships aur Code-First migrations manage karta hai.</li>
+    <li><strong>Middleware</strong>: Global <code>ExceptionMiddleware</code> jo unhandled exceptions ko catch karke uniform clean JSON return karta hai bina internal stack traces leak kiye.</li>
+  </ul>
+
+  <div class="box box-warning">
+    <strong>🔥 Super Common Interview Question:</strong> <em>"Aapne Repository / Unit of Work pattern alag se kyun nahi banaya?"</em><br>
+    <strong>Aapka Answer:</strong><br>
+    <em>"Entity Framework Core ka <code>DbContext</code> internally already <strong>Unit of Work</strong> pattern implement karta hai aur <code>DbSet&lt;T&gt;</code> already <strong>Repository</strong> pattern implement karta hai. Unke upar ek aur custom generic repository layer create karne se abstraction over abstraction ho jata hai aur EF Core ke powerful features jaise <code>.Select()</code> projections, optimized queries aur change tracking restrict ho jate hain. Isliye modern .NET 8 best practices ke mutabiq maine Controller &rarr; Service &rarr; DbContext architecture choose kiya jo clean, maintainable aur highly testable hai."</em>
+  </div>
+
+  <!-- SECTION 3 -->
+  <h2>3. Database Design & Relations (SQL Server + EF Core)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Entity</th>
+        <th>Key Columns</th>
+        <th>Relationships / Constraints</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>User</strong></td>
+        <td>Id, Name, Email, PasswordHash, Role, CreatedAt</td>
+        <td>Email is Unique Indexed. Roles: Admin, Manager, User.</td>
+      </tr>
+      <tr>
+        <td><strong>Team</strong></td>
+        <td>Id, Name, Description, ManagerId, CreatedAt</td>
+        <td>Foreign key to User (Manager) with <code>DeleteBehavior.Restrict</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>TeamMember</strong></td>
+        <td>Id, TeamId, UserId</td>
+        <td>Composite Unique Index on <code>(TeamId, UserId)</code>. Cascades on Team/User delete.</td>
+      </tr>
+      <tr>
+        <td><strong>TaskItem</strong> (Tasks)</td>
+        <td>Id, Title, Description, TeamId, AssignedToUserId, CreatedByUserId, Priority, Status, Deadline</td>
+        <td>FK to Team (Cascade), FK to AssignedToUser (SetNull), FK to CreatedByUser (Restrict).</td>
+      </tr>
+      <tr>
+        <td><strong>Comment</strong></td>
+        <td>Id, TaskId, UserId, Content, CreatedAt</td>
+        <td>FK to Task (Cascade), FK to User (Restrict).</td>
+      </tr>
+      <tr>
+        <td><strong>Notification</strong></td>
+        <td>Id, UserId, TaskId, Message, Type, IsRead, CreatedAt</td>
+        <td>FK to User (Cascade), FK to Task (Cascade).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="qa-card">
+    <div class="qa-q">Q: SQL Server me Foreign Key Cycle issue ko kaise handle kiya?</div>
+    <div class="qa-a"><strong>Ans:</strong> <em>"SQL Server multiple cascading paths allow nahi karta. Maine <code>OnModelCreating</code> me User foreign keys pe <code>DeleteBehavior.Restrict</code> lagaya aur dependent parent-child (jaise Team &rarr; Tasks &rarr; Comments) pe <code>DeleteBehavior.Cascade</code> lagaya. Isse circular cascade deadlock completely prevent ho jata hai."</em></div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4 -->
+  <h2>4. Authentication & Security (Deep Dive)</h2>
+  <div class="box">
+    <ul>
+      <li><strong>Password Hashing:</strong> <code>BCrypt.Net-Next</code> use kiya hai. BCrypt me built-in salt generation aur work-factor (cost) hota hai, jo rainbow table attacks aur brute-force attacks ko prevent karta hai. Plain text passwords kabhi store nahi hote.</li>
+      <li><strong>JWT Structure:</strong> Token me 3 primary claims embed kiye hain:
+        <ul>
+          <li><code>ClaimTypes.NameIdentifier</code> / <code>userId</code></li>
+          <li><code>ClaimTypes.Email</code></li>
+          <li><code>ClaimTypes.Role</code></li>
+        </ul>
+      </li>
+      <li><strong>Token Expiration:</strong> 24 hours expiry time set hai.</li>
+      <li><strong>Axios Interceptors:</strong>
+        <ul>
+          <li><em>Request Interceptor:</em> Har outgoing request ke header me automatically <code>Authorization: Bearer {token}</code> attach karta hai.</li>
+          <li><em>Response Interceptor:</em> Agar server <strong>401 Unauthorized</strong> return kare (token expired/invalid), to localStorage clear karke user ko automatically <code>/login?expired=true</code> pe redirect karta hai.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- SECTION 5 -->
+  <h2>5. Role Authorization & Business Rules (Kaise Enforce Kiya)</h2>
+  <p>Is project me role authorization sirf frontend button hide karke nahi, balki <strong>Backend Service Layer me physically enforce</strong> kiya gaya hai:</p>
+
+  <div class="qa-card">
+    <div class="qa-q">Rule 1: Manager kisi doosri team ke bande ko task assign nahi kar sakta:</div>
+    <div class="qa-a">
+      <em>"TaskService me jab Manager task create ya reassign karta hai, to service verify karti hai ki kya target user <code>TeamMembers</code> table me us <code>TeamId</code> ke sath linked hai ya nahi. Agar outsider hai, to backend turant <code>BadRequestException('Cannot assign a task to a user outside your team')</code> throw karta hai."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Rule 2: User doosre user ka task ID change karke access ya modify nahi kar sakta (IDOR Prevention):</div>
+    <div class="qa-a">
+      <em>"Jab User <code>GET /api/tasks/{id}</code> ya <code>PATCH /api/tasks/{id}/status</code> call karta hai, to service caller ka <code>currentUserId</code> extract karti hai aur check karti hai ki <code>task.AssignedToUserId == currentUserId</code> hai ya nahi. Agar kisi doosre user ka task ID dala gaya ho, to backend directly <strong>403 Forbidden</strong> return karta hai."</em>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <h2>6. Notifications & Dashboard Logic</h2>
+  <ul>
+    <li><strong>Automated Notifications:</strong>
+      <ol>
+        <li>Jab koi task kisi user ko <strong>assign</strong> hota hai &rarr; Assignee ko notification jati hai: <em>"You have been assigned to task: '{title}'"</em>.</li>
+        <li>Jab task ka <strong>status change</strong> hota hai &rarr; Related assignee aur creator ko notification jati hai: <em>"Task '{title}' status changed from 'To Do' to 'In Progress'"</em>.</li>
+      </ol>
+    </li>
+    <li><strong>Role-Tailored Dashboards:</strong>
+      <ul>
+        <li><code>GET /api/dashboard/admin</code> &rarr; Total Users, Total Teams, Total Tasks, To Do, In Progress, Done, Overdue, High Priority.</li>
+        <li><code>GET /api/dashboard/manager</code> &rarr; Manager ki managed team ke statistics aur team member count.</li>
+        <li><code>GET /api/dashboard/user</code> &rarr; User ke assigned tasks ke statistics aur upcoming deadlines.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- SECTION 7 -->
+  <h2>7. Testing Strategy (xUnit + Moq + InMemory DB)</h2>
+  <div class="box">
+    <strong>17 Automated Tests</strong> banaye hain jo 100% pass ho rahe hain:
+    <ul>
+      <li><code>AuthServiceTests</code>: Valid registration, duplicate email rejection (400), login validation, wrong password rejection.</li>
+      <li><code>TaskServiceTests</code>: Manager task creation inside team vs outside team rejection, User creation blocked (403), User status update on assigned vs unassigned task rejection (403), Manager assignment to team member vs outsider rejection.</li>
+      <li><code>AuthorizationTests</code>: JWT claim token generation aur ClaimsPrincipal extraction.</li>
+    </ul>
+    <em>"Maine InMemory Database isliye use kiya taaki unit tests fast execute hon, test cases isolated rahen aur CI/CD pipeline me external SQL Server pe depend na hona pade."</em>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 8 -->
+  <h2>8. Top 10 Tricky Interview Questions & Ready Hinglish Answers</h2>
+
+  <div class="qa-card">
+    <div class="qa-q">1. DTOs (Data Transfer Objects) kyun use kiye? Direct EF Core Entities kyun nahi return kiye?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"Teen primary reasons hain:
+      1) <strong>Security & Over-Posting:</strong> Direct entity lene se malicious users internal columns (jaise Role ya PasswordHash) manipulate kar sakte hain.
+      2) <strong>Circular References:</strong> Entities me bidirectional navigation properties hoti hain (User &rarr; Team &rarr; User) jo JSON serializer me infinite loop error deti hain.
+      3) <strong>Payload Optimization:</strong> Client ko sirf wahi fields bhejna jo zaroori hain, sensitive columns hide karke."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">2. Global Exception Handling kaise implement ki hai?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"Maine custom <code>ExceptionMiddleware</code> implement kiya hai jo HTTP pipeline me sabse pehle invoke hota hai. Agar koi service exception throw karti hai (e.g. <code>NotFoundException</code>, <code>ForbiddenException</code>, <code>BadRequestException</code>), to middleware use catch karta hai, <code>ILogger</code> se server console me log karta hai, aur client ko clean standardized JSON response <code>{ success: false, message: '...' }</code> with proper HTTP status code (404, 403, 400, 500) return karta hai bina stack traces expose kiye."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">3. Entity Framework Core me N+1 Query Problem ko kaise prevent kiya?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"Maine Eager Loading use ki hai via <code>.Include()</code> aur <code>.ThenInclude()</code> jisse EF Core single SQL JOIN query generate karta hai loop me alag-alag queries run karne ke bajaye. Saath hi read-only queries me <code>.AsNoTracking()</code> use kiya hai jo EF change tracker ki overhead ko eliminate karta hai aur query performance 3x fast karta hai."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">4. React me JWT token expiration kaise handle kiya hai?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"Axios response interceptor configure kiya hai. Jab bhi backend se <strong>401 Unauthorized</strong> status code aata hai (matlab token expire ho chuka hai ya invalid hai), interceptor automatically <code>localStorage</code> se token aur user details clear karta hai aur window location ko <code>/login?expired=true</code> pe redirect kar deta hai."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">5. Swagger me JWT Bearer authentication kaise setup kiya?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"<code>Program.cs</code> me <code>AddSwaggerGen</code> ke andar <code>AddSecurityDefinition</code> define kiya jisme <code>SecuritySchemeType.Http</code> aur Scheme 'Bearer' di. Saath hi <code>AddSecurityRequirement</code> lagaya. Isse Swagger UI ke top-right me 'Authorize' button aa jata hai jahan login API se mila JWT paste karke protected endpoints directly test kiye ja sakte hain."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">6. Docker me multi-container setup kaise work karta hai?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"<code>docker-compose.yml</code> me 3 services hain: <code>sqlserver</code> (MSSQL 2022 Linux image), <code>backend</code> (Multi-stage .NET 8 build on port 5000), aur <code>frontend</code> (Multi-stage Node build & Nginx alpine on port 3000). Teeno ek common bridge network pe communicate karte hain aur SQL Server ka data named volume me persist hota hai."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">7. CI/CD pipeline me kya setup kiya hai?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"GitHub Actions workflow (<code>.github/workflows/ci.yml</code>) create kiya hai jo har git push aur pull request par automatically .NET 8 restore & build karta hai, 17 xUnit tests run karta hai, aur React frontend build (<code>npm run build</code>) verify karta hai. Agar test fail ho to PR merge nahi ho sakti."</em>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">8. Task statuses aur priorities kya hain?</div>
+    <div class="qa-a">
+      <strong>Ans:</strong> <em>"Statuses: <strong>To Do</strong>, <strong>In Progress</strong>, <strong>Done</strong>. Priorities: <strong>Low</strong>, <strong>Medium</strong>, <strong>High</strong>, <strong>Urgent</strong>. Database me inke regular expression validation DTOs me lage hain."</em>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <h2>9. Sample Credentials & Demonstration Flow</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Key Features to Demonstrate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Admin</strong></td>
+        <td><code>admin@example.com</code></td>
+        <td><code>Password123!</code></td>
+        <td>Organization-wide overview metrics, team creation, full task oversight, user directory.</td>
+      </tr>
+      <tr>
+        <td><strong>Manager</strong></td>
+        <td><code>manager@example.com</code></td>
+        <td><code>Password123!</code></td>
+        <td>Platform Engineering team dashboard, creating tasks for team members, adding members.</td>
+      </tr>
+      <tr>
+        <td><strong>User</strong></td>
+        <td><code>user@example.com</code></td>
+        <td><code>Password123!</code></td>
+        <td>Personal task workspace, inline status updates (To Do &rarr; Done), collaborative comments, notification bell.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>

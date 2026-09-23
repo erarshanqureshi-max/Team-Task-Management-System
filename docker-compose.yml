@@ -1,0 +1,52 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskflow-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password123!
+    ports:
+      - "1433:1433"
+    networks:
+      - taskflow-network
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: taskflow-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TaskManagementDb;User Id=sa;Password=Password123!;TrustServerCertificate=True;MultipleActiveResultSets=true;
+      - Jwt__Key=TeamTaskManagementSuperSecretKey_2026_Minimum32CharsLength!
+      - Jwt__Issuer=TaskManagementAPI
+      - Jwt__Audience=TaskManagementClient
+      - Jwt__ExpirationHours=24
+    ports:
+      - "5000:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - taskflow-network
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: taskflow-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - taskflow-network
+
+networks:
+  taskflow-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
