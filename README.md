@@ -6,6 +6,16 @@ The project follows a clean **Controller $\rightarrow$ Service $\rightarrow$ EF 
 
 ---
 
+## 🌐 Live Application Demo
+- **Live Demo URL**: **[https://astronomy-saturn-allocated-messages.trycloudflare.com](https://astronomy-saturn-allocated-messages.trycloudflare.com)**
+- **API Status**: Online (ASP.NET Core Web API .NET 8 + React Vite Frontend + MS SQL Server)
+- **Interactive Credentials**:
+  - **Admin**: `admin@example.com` | `Password123!`
+  - **Manager**: `manager@example.com` | `Password123!`
+  - **Member**: `user@example.com` | `Password123!`
+
+---
+
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Key Features](#key-features)
@@ -254,8 +264,6 @@ All seeded sample accounts use the password: `Password123!`
 | **Manager** | `manager@example.com` | `Password123!` | Manages "Engineering Team" and "Product Team" |
 | **User** | `user@example.com` | `Password123!` | Member of "Engineering Team", assigned developer tasks |
 | **User (Extra)** | `charlie@example.com` | `Password123!` | Member of "Product Team", assigned design tasks |
-
-> **Tip**: The login page includes quick 1-click buttons to instantly populate the form for Admin, Manager, or User.
 
 ---
 
