@@ -6,10 +6,10 @@ The project follows a clean **Controller $\rightarrow$ Service $\rightarrow$ EF 
 
 ---
 
-## ⚡ Quick Start & Verification
-- **Interactive Swagger Documentation**: Available at `/swagger` on API launch.
-- **Frontend Application**: React 18 (Vite + Bootstrap 5) with role-based access control.
-- **Pre-configured Test Credentials**:
+## 🌐 Live Application Demo
+- **Live Demo URL**: **[https://runner-motivated-continental-improved.trycloudflare.com](https://runner-motivated-continental-improved.trycloudflare.com)**
+- **API Status**: Online (ASP.NET Core Web API .NET 8 + React Vite Frontend + MS SQL Server)
+- **Interactive Credentials**:
   - **Admin**: `admin@example.com` | `Password123!`
   - **Manager**: `manager@example.com` | `Password123!`
   - **Member**: `user@example.com` | `Password123!`
