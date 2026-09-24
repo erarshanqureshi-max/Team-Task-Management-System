@@ -1,4 +1,18 @@
 <Solution>
+  <Folder Name="/Frontend/Pages/">
+    <File Path="../Frontend/src/pages/DashboardPage.jsx" />
+    <File Path="../Frontend/src/pages/TaskListPage.jsx" />
+    <File Path="../Frontend/src/pages/TaskCreatePage.jsx" />
+    <File Path="../Frontend/src/pages/TaskDetailPage.jsx" />
+    <File Path="../Frontend/src/pages/TaskEditPage.jsx" />
+    <File Path="../Frontend/src/pages/TeamsPage.jsx" />
+    <File Path="../Frontend/src/pages/TeamDetailPage.jsx" />
+    <File Path="../Frontend/src/pages/UsersPage.jsx" />
+    <File Path="../Frontend/src/pages/NotificationsPage.jsx" />
+    <File Path="../Frontend/src/pages/LoginPage.jsx" />
+    <File Path="../Frontend/src/pages/RegisterPage.jsx" />
+    <File Path="../Frontend/src/App.jsx" />
+  </Folder>
   <Project Path="TaskManagement.API/TaskManagement.API.csproj" />
   <Project Path="TaskManagement.Tests/TaskManagement.Tests.csproj" />
 </Solution>
