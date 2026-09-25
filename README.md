@@ -7,7 +7,7 @@ The project follows a clean **Controller $\rightarrow$ Service $\rightarrow$ EF 
 ---
 
 ## 🌐 Live Application Demo
-- **Live Demo URL**: **[https://runner-motivated-continental-improved.trycloudflare.com](https://runner-motivated-continental-improved.trycloudflare.com)**
+- **Live Demo URL**: **[https://copyrighted-gibson-switched-hero.trycloudflare.com](https://copyrighted-gibson-switched-hero.trycloudflare.com)**
 - **API Status**: Online (ASP.NET Core Web API .NET 8 + React Vite Frontend + MS SQL Server)
 - **Interactive Credentials**:
   - **Admin**: `admin@example.com` | `Password123!`
